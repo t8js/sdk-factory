@@ -1,0 +1,38 @@
+{
+  "name": "@t8/sdk-factory",
+  "version": "0.1.0",
+  "description": "Typed SDK factory for web APIs",
+  "main": "dist/index.js",
+  "type": "module",
+  "scripts": {
+    "build": "npx npm-run-all cleanup compile",
+    "cleanup": "node -e \"require('node:fs').rmSync('dist', {force: true, recursive: true});\"",
+    "compile": "npx npm-run-all compile:src compile:tests",
+    "compile:src": "npx esbuild index.ts --bundle --outdir=dist --platform=neutral",
+    "compile:tests": "npx esbuild tests.ts --bundle --outdir=dist --platform=neutral",
+    "gh-pages": "npx ghstage --theme=t8 --ymid=103784239 --nav=https://raw.githubusercontent.com/t8js/t8js.github.io/refs/heads/main/assets/nav.html",
+    "prepublishOnly": "npx npm-run-all build test gh-pages",
+    "preversion": "npx npm-run-all typecheck build test",
+    "test": "node dist/tests.js",
+    "typecheck": "tsc --noEmit"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/t8js/sdk-factory.git"
+  },
+  "keywords": [
+    "api",
+    "sdk",
+    "schema",
+    "request",
+    "typed api",
+    "typed sdk",
+    "typed schema"
+  ],
+  "author": "axtk",
+  "license": "ISC",
+  "devDependencies": {
+    "@types/node": "^22.9.0",
+    "typescript": "^5.9.2"
+  }
+}
