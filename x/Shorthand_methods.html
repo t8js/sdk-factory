@@ -1,0 +1,47 @@
+---
+layout: section
+id: "Shorthand_methods"
+title: "Shorthand methods"
+prev:
+    id: "Schema_definition"
+    title: "Schema definition"
+next:
+    id: "Custom_request_handler"
+    title: "Custom request handler"
+---
+
+<h2 id="shorthand-methods">Shorthand methods</h2>
+<p>The API schema keys can be mapped to custom method names:</p>
+<pre><code class="language-ts">let api = service.getEntry({
+    getItems: 'GET /items',
+    getItem: 'GET /items/:id',
+    setItem: 'POST /items/:id',
+});
+</code></pre>
+<p>With such a mapping in place, <code>service.send('GET /items/:id', {...})</code> has another equivalent form:</p>
+<pre><code class="language-ts">let response = await api.getItem({
+    params: {
+        id: 10,
+    },
+    query: {
+        mode: 'full',
+    },
+});
+</code></pre>
+<p>The <code>getEntry()</code> method doesn't have to take all the API schema keys at once. The API methods can be split into logical scopes:</p>
+<pre><code class="language-ts">let api = {
+    users: service.getEntry({
+        getList: 'GET /users',
+        getInfo: 'GET /users/:id',
+    }),
+    items: service.getEntry({
+        getList: 'GET /items',
+        getInfo: 'GET /items/:id',
+        setInfo: 'POST /items/:id',
+    }),
+};
+
+let userList = await api.users.getList();
+let firstUser = await api.users.getInfo({params: {id: userList[0].id}});
+</code></pre>
+<p>For API methods controlled only with query parameters, there is also a shorthand option: the <code>getQueryEntry()</code> method, returning aliases accepting only query parameters, without the need to nest them into the <code>query</code> key.</p>

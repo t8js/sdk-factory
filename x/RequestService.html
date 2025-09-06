@@ -1,0 +1,27 @@
+---
+layout: section
+id: "RequestService"
+title: "<code>RequestService</code>"
+prev:
+    id: ""
+    title: ""
+next:
+    id: "Schema_definition"
+    title: "Schema definition"
+---
+
+<h2 id="requestservice"><code>RequestService</code></h2>
+<p>The <code>RequestService</code> class helps create a type-safe entrypoint to an API:</p>
+<pre><code class="language-ts">import {RequestService} from '@t8/sdk-factory';
+
+let service = new RequestService&lt;APISchema&gt;(fetchData);
+</code></pre>
+<p>The constructor accepts a custom request handler <code>fetchData</code>. A specific request handler isn't built into the package, since it can vary in many ways depending on the purpose and environment of the application (it might make use of <code>fetch</code>, <code>node-fetch</code>, <code>axios</code>, logging, default headers, or whatever necessary).</p>
+<p>The purpose of <code>RequestService</code> is to offer a consistent environment-agnostic interface to request handling on top of a typed API schema.</p>
+<p>🔹 A typed schema allows to prevalidate request inputs at compile-time and highlight mismatches in a type-aware IDE.</p>
+<p>🔹 The environment-agnostic interface works consistently throughout the client and the server:</p>
+<pre><code class="language-ts">let browserClient = new RequestService&lt;APISchema&gt;(clientHandler);
+</code></pre>
+<pre><code class="language-ts">let serverClient = new RequestService&lt;APISchema&gt;(serverHandler);
+</code></pre>
+<p>Same API schema, same request interface, same reusable related code, different environment-specific request handlers.</p>
