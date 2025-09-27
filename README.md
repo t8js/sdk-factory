@@ -15,7 +15,7 @@ Installation: `npm i @t8/sdk-factory`
 The `RequestService` class helps create a type-safe entrypoint to an API:
 
 ```ts
-import {RequestService} from '@t8/sdk-factory';
+import { RequestService } from "@t8/sdk-factory";
 
 let service = new RequestService<APISchema>(fetchData);
 ```
@@ -43,55 +43,55 @@ Same API schema, same request interface, same reusable related code, different e
 The `APISchema` type used with the [`RequestService`](#requestservice) constructor is a custom schema outlining the types of requests and responses within an API. The example below shows what such a schema may look like.
 
 ```ts
-import type {Schema} from '@t8/sdk-factory';
+import type { Schema } from "@t8/sdk-factory";
 
 // wrapping into the `Schema` generic type is optional, but
 // this helps validate the basic schema structure
 export type APISchema = Schema<{
-    // a schema key can be any unique string, for an HTTP API
-    // a pair of a method and a path can serve this purpose
-    'GET /items/:id': {
-        request: {
-            // `params` can be omitted if the URL path is fixed and
-            // has no parameter placeholders
-            params: {
-                id: number;
-            };
-            query?: {
-                mode?: 'compact' | 'full';
-            };
-        };
-        response: {
-            body: {
-                id: number;
-                name?: string;
-            };
-        };
+  // a schema key can be any unique string, for an HTTP API
+  // a pair of a method and a path can serve this purpose
+  "GET /items/:id": {
+    request: {
+      // `params` can be omitted if the URL path is fixed and
+      // has no parameter placeholders
+      params: {
+        id: number;
+      };
+      query?: {
+        mode?: "compact" | "full";
+      };
     };
-    'POST /items/:id': {
-        // ...
+    response: {
+      body: {
+        id: number;
+        name?: string;
+      };
     };
-    'GET /items': {
-        // ...
-    };
-    // ... and so forth
+  };
+  "POST /items/:id": {
+    // ...
+  };
+  "GET /items": {
+    // ...
+  };
+  // ... and so forth
 }>;
 ```
 
 With such a schema assigned to `service`, calls to its `send()` method will be prevalidated against this schema, which means that a type-aware IDE will warn of type mismatches or typos in the parameters:
 
 ```ts
-let {ok, status, body} = await service.send('GET /items/:id', {
-    params: {
-        id: 10,
-    },
-    query: {
-        mode: 'full',
-    },
+let { ok, status, body } = await service.send("GET /items/:id", {
+  params: {
+    id: 10,
+  },
+  query: {
+    mode: "full",
+  },
 });
 ```
 
-The options passed as the second parameter to `send()` are validated as `APISchema['GET /items/:id']` based on the schema type passed to the `RequestService` constructor and the first parameter passed to `send()`.
+The options passed as the second parameter to `send()` are validated as `APISchema["GET /items/:id"]` based on the schema type passed to the `RequestService` constructor and the first parameter passed to `send()`.
 
 ## Shorthand methods
 
@@ -99,22 +99,22 @@ The API schema keys can be mapped to custom method names:
 
 ```ts
 let api = service.getEntry({
-    getItems: 'GET /items',
-    getItem: 'GET /items/:id',
-    setItem: 'POST /items/:id',
+  getItems: "GET /items",
+  getItem: "GET /items/:id",
+  setItem: "POST /items/:id",
 });
 ```
 
-With such a mapping in place, `service.send('GET /items/:id', {...})` has another equivalent form:
+With such a mapping in place, `service.send("GET /items/:id", { ... })` has another equivalent form:
 
 ```ts
 let response = await api.getItem({
-    params: {
-        id: 10,
-    },
-    query: {
-        mode: 'full',
-    },
+  params: {
+    id: 10,
+  },
+  query: {
+    mode: "full",
+  },
 });
 ```
 
@@ -122,19 +122,19 @@ The `getEntry()` method doesn't have to take all the API schema keys at once. Th
 
 ```ts
 let api = {
-    users: service.getEntry({
-        getList: 'GET /users',
-        getInfo: 'GET /users/:id',
-    }),
-    items: service.getEntry({
-        getList: 'GET /items',
-        getInfo: 'GET /items/:id',
-        setInfo: 'POST /items/:id',
-    }),
+  users: service.getEntry({
+    getList: "GET /users",
+    getInfo: "GET /users/:id",
+  }),
+  items: service.getEntry({
+    getList: "GET /items",
+    getInfo: "GET /items/:id",
+    setInfo: "POST /items/:id",
+  }),
 };
 
 let userList = await api.users.getList();
-let firstUser = await api.users.getInfo({params: {id: userList[0].id}});
+let firstUser = await api.users.getInfo({ params: { id: userList[0].id } });
 ```
 
 For API methods controlled only with query parameters, there is also a shorthand option: the `getQueryEntry()` method, returning aliases accepting only query parameters, without the need to nest them into the `query` key.
@@ -147,43 +147,43 @@ Here's an example of a basic JSON request handler that can be passed to `Request
 
 ```ts
 import {
-    RequestHandler,
-    RequestError,
-    getRequestAction,
-    toStringValueMap,
-} from '@t8/sdk-factory';
+  RequestHandler,
+  RequestError,
+  getRequestAction,
+  toStringValueMap,
+} from "@t8/sdk-factory";
 
-const endpoint = 'https://api.example.com';
+const endpoint = "https://api.example.com";
 
 export const fetchJSON: RequestHandler = async (target, request) => {
-    let {method, url} = getRequestAction({request, target, endpoint});
+  let { method, url } = getRequestAction({ request, target, endpoint });
 
-    let response = await fetch(url, {
-        method,
-        headers: toStringValueMap(request?.headers),
-        body: request?.body ? JSON.stringify(request?.body) : null,
+  let response = await fetch(url, {
+    method,
+    headers: toStringValueMap(request?.headers),
+    body: request?.body ? JSON.stringify(request?.body) : null,
+  });
+
+  let { ok, status, statusText } = response;
+
+  if (!ok) {
+    throw new RequestError({
+      status,
+      statusText,
     });
+  }
 
-    let {ok, status, statusText} = response;
-
-    if (!ok) {
-        throw new RequestError({
-            status,
-            statusText,
-        });
-    }
-
-    try {
-        return {
-            ok,
-            status,
-            statusText,
-            body: await response.json(),
-        };
-    }
-    catch (error) {
-        throw new RequestError(error);
-    }
+  try {
+    return {
+      ok,
+      status,
+      statusText,
+      body: await response.json(),
+    };
+  }
+  catch (error) {
+    throw new RequestError(error);
+  }
 }
 ```
 
