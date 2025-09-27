@@ -1,3 +1,3 @@
-import type {SchemaEntry} from '../SchemaEntry';
+import type { SchemaEntry } from "../SchemaEntry";
 
-export type ReqShape<T extends SchemaEntry> = T['request'];
+export type ReqShape<T extends SchemaEntry> = T["request"];

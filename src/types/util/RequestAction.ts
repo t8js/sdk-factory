@@ -1,4 +1,4 @@
 export type RequestAction = {
-    method?: string;
-    url: string;
+  method?: string;
+  url: string;
 };

@@ -1,4 +1,4 @@
-import type {SchemaEntry} from '../SchemaEntry';
-import type {PartialRequest} from './PartialRequest';
+import type { SchemaEntry } from "../SchemaEntry";
+import type { PartialRequest } from "./PartialRequest";
 
-export type ReqBody<T extends SchemaEntry> = PartialRequest<T, 'body'>;
+export type ReqBody<T extends SchemaEntry> = PartialRequest<T, "body">;
