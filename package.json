@@ -10,7 +10,7 @@
     "compile": "npx npm-run-all compile:src compile:tests",
     "compile:src": "npx esbuild index.ts --bundle --outdir=dist --platform=neutral",
     "compile:tests": "npx esbuild tests.ts --bundle --outdir=dist --platform=neutral",
-    "gh-pages": "npx ghstage --theme=t8 --ymid=103784239 --nav=https://raw.githubusercontent.com/t8js/t8js.github.io/refs/heads/main/assets/nav.html",
+    "gh-pages": "npx ghstage --theme=t8 --ymid=103784239 --nav=https://raw.githubusercontent.com/t8js/t8js.github.io/refs/heads/main/assets/nav_vanilla.html",
     "prepublishOnly": "npx npm-run-all build test gh-pages",
     "preversion": "npx npm-run-all typecheck shape build test",
     "shape": "npx codeshape",
