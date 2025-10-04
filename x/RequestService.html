@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="t8">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>&lt;code&gt;RequestService&lt;/code&gt; | @t8/sdk-factory</title>
+<link rel="stylesheet" href="https://unpkg.com/ghstage@2.5/dist/css/base.css">
+<link rel="stylesheet" href="https://unpkg.com/ghstage@2.5/dist/css/section.css">
+<link rel="icon" type="image/png" href="/assets/logo.png">
+<link rel="prefetch" href="/sdk-factory/x/Schema_definition">
+
+</head>
+<body>
+<div class="layout">
+<div class="body">
+<main>
+<h1><a href="/" class="scope">@t8</a><span class="sep">/</span><a href="/sdk-factory/" class="name">sdk-factory</a></a></h1>
+<h2 id="requestservice"><code>RequestService</code></h2>
+<p>The <code>RequestService</code> class helps create a type-safe entrypoint to an API:</p>
+<pre><code class="language-ts">import { RequestService } from "@t8/sdk-factory";
+
+let service = new RequestService&lt;APISchema&gt;(fetchData);
+</code></pre>
+<p>The constructor accepts a custom request handler <code>fetchData</code>. A specific request handler isn't built into the package, since it can vary in many ways depending on the purpose and environment of the application (it might make use of <code>fetch</code>, <code>node-fetch</code>, <code>axios</code>, logging, default headers, or whatever necessary).</p>
+<p>The purpose of <code>RequestService</code> is to offer a consistent environment-agnostic interface to request handling on top of a typed API schema.</p>
+<p>🔹 A typed schema allows to prevalidate request inputs at compile-time and highlight mismatches in a type-aware IDE.</p>
+<p>🔹 The environment-agnostic interface works consistently throughout the client and the server:</p>
+<pre><code class="language-ts">let browserClient = new RequestService&lt;APISchema&gt;(clientHandler);
+</code></pre>
+<pre><code class="language-ts">let serverClient = new RequestService&lt;APISchema&gt;(serverHandler);
+</code></pre>
+<p>Same API schema, same request interface, same reusable related code, different environment-specific request handlers.</p>
+
+<p class="pagenav">
+  <span class="prev">
+    <span class="icon">←</span>
+    <a href="/sdk-factory/">Intro</a>
+  </span>
+  <span class="sep">|</span>
+  <span class="next"><a href="/sdk-factory/x/Schema_definition">Schema definition</a> <span class="icon">→</span></span>
+</p>
+</main>
+<hr>
+<nav>
+<section><ul>
+<li data-id="RequestService"><a href="/sdk-factory/x/RequestService"><code>RequestService</code></a></li></li>
+<li data-id="Schema_definition"><a href="/sdk-factory/x/Schema_definition">Schema definition</a></li></li>
+<li data-id="Shorthand_methods"><a href="/sdk-factory/x/Shorthand_methods">Shorthand methods</a></li></li>
+<li data-id="Custom_request_handler"><a href="/sdk-factory/x/Custom_request_handler">Custom request handler</a></li></li>
+</ul></section>
+<section class="ref">
+  <ul>
+    <li><a href="https://github.com/t8js/sdk-factory" target="_blank">GitHub</a></li>
+    
+  </ul>
+</section>
+<section class="related">
+  <h2>Also with vanilla TS/JS</h2>
+  <ul>
+    <li><a href="https://github.com/t8js/router#readme" data-name="@t8/router">T8 <strong>Router</strong></a></li>
+    <li><a href="https://github.com/t8js/store#readme" data-name="@t8/store">T8 <strong>Store</strong></a></li>
+  </ul>
+  <h2>With React</h2>
+  <ul>
+    <li><a href="/react-router" data-name="@t8/react-router">T8 <strong>React Router</strong></a></li>
+    <li><a href="/react-store" data-name="@t8/react-store">T8 <strong>React Store</strong></a></li>
+    <li><a href="/react-pending" data-name="@t8/react-pending">T8 <strong>React Pending</strong></a></li>
+  </ul>
+</section>
+
+</nav>
+</div>
+</div>
+
+<link rel="stylesheet" href="https://unpkg.com/@highlightjs/cdn-assets@11.11.1/styles/base16/material.min.css">
+<link rel="stylesheet" href="https://unpkg.com/ghstage@2.5/dist/css/code.css">
+<script src="https://unpkg.com/@highlightjs/cdn-assets@11.11.1/highlight.min.js"></script>
+<script>hljs.highlightAll()</script>
+<script>
+(function(m,e,t,r,i,k,a){m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};
+m[i].l=1*new Date();
+for (var j = 0; j < document.scripts.length; j++) {if (document.scripts[j].src === r) { return; }}
+k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)})
+(window, document, "script", "https://mc.yandex.com/metrika/tag.js", "ym");
+ym(103784239, "init", {clickmap: true, trackLinks: true, accurateTrackBounce: true});
+</script>
+<noscript><div><img src="https://mc.yandex.com/watch/103784239" style="position:absolute;left:-9999px;" alt=""></div></noscript>
+</body>
+</html>
