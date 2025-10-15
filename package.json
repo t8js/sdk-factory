@@ -1,6 +1,6 @@
 {
   "name": "@t8/sdk-factory",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "Typed SDK factory for web APIs",
   "main": "dist/index.js",
   "type": "module",
