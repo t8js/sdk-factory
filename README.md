@@ -4,39 +4,44 @@
 
 *Typed SDK factory for web APIs*
 
-- Type-safe request handler based on a custom API schema
-- Shared interface for handling API requests on the client and the server
-- No internal dependence on a specific request utility
+- Typed requests based on custom API schemas
+- Environment-agnostic interface
+- Zero dependencies
 
 Installation: `npm i @t8/sdk-factory`
 
 ## `RequestService`
 
-The `RequestService` class helps create a type-safe entrypoint to an API:
+The `RequestService` class helps create a thin type-safe entrypoint to an API:
 
 ```ts
 import { RequestService } from "@t8/sdk-factory";
 
-let service = new RequestService<APISchema>(fetchData);
+let service = new RequestService<APISchema>(requestHandler);
 ```
 
-The constructor accepts a custom request handler `fetchData`. A specific request handler isn't built into the package, since it can vary in many ways depending on the purpose and environment of the application (it might make use of `fetch`, `node-fetch`, `axios`, logging, default headers, or whatever necessary).
+The constructor accepts a custom `requestHandler`. A specific request handler isn't built into the package, since it can vary in many ways depending on the purpose and environment of the application: it can make use of `fetch`, `axios`, logging, default headers, or whatever necessary.
 
-The purpose of `RequestService` is to offer a consistent environment-agnostic interface to request handling on top of a typed API schema.
+The purpose of `RequestService` is to offer a single environment-agnostic interface to request handling on top of a typed API schema.
 
 🔹 A typed schema allows to prevalidate request inputs at compile-time and highlight mismatches in a type-aware IDE.
 
 🔹 The environment-agnostic interface works consistently throughout the client and the server:
 
 ```ts
-let browserClient = new RequestService<APISchema>(clientHandler);
+let service = new RequestService<APISchema>(browserHandler);
 ```
 
 ```ts
-let serverClient = new RequestService<APISchema>(serverHandler);
+let service = new RequestService<APISchema>(serverHandler);
 ```
 
-Same API schema, same request interface, same reusable related code, different environment-specific request handlers.
+The same API with different environment-specific request handlers under the hood results in reusable isomorphic code:
+
+```ts
+// browser or server
+let { ok, status, body } = await service.send("GET /items");
+```
 
 ## Schema definition
 
@@ -187,4 +192,4 @@ export const fetchJSON: RequestHandler = async (target, request) => {
 }
 ```
 
-To meet the needs of a specific use case, the request handler's code can certainly depart from the example above (which is again the reason why it's not hardwired into the package).
+To meet the needs of a specific use case, the request handler's code can certainly depart from the example above (which is the primary reason why it's not hardwired into the package).
