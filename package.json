@@ -30,7 +30,7 @@
     "typed schema"
   ],
   "author": "axtk",
-  "license": "ISC",
+  "license": "MIT",
   "devDependencies": {
     "@types/node": "^22.9.0",
     "typescript": "^5.9.2"
