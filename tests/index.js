@@ -1,19 +1,17 @@
 // node_modules/@t8/serve/dist/index.js
 import { createReadStream } from "node:fs";
+import { access, lstat, rm } from "node:fs/promises";
 import { createServer } from "node:http";
-import { extname } from "node:path";
-import { rm } from "node:fs/promises";
-import { join } from "node:path";
+import { extname, join, join as join2 } from "node:path";
 import { build } from "esbuild";
-import { join as join2 } from "node:path";
-import { access, lstat } from "node:fs/promises";
+
 async function bundle({ path = "", bundle: options } = {}) {
   if (!options) return;
   let normalizedOptions;
   if (typeof options === "boolean") normalizedOptions = {};
   else if (typeof options === "string")
     normalizedOptions = {
-      input: options
+      input: options,
     };
   else normalizedOptions = options;
   let dir = normalizedOptions.dir ?? "dist";
@@ -25,7 +23,7 @@ async function bundle({ path = "", bundle: options } = {}) {
     outfile: outputFile,
     bundle: true,
     platform: "browser",
-    logLevel: "warning"
+    logLevel: "warning",
   });
 }
 async function isValidFilePath(filePath, dirPath) {
@@ -43,7 +41,7 @@ async function getFilePath(url = "", { path = "", dirs = [], spa }) {
   for (let dir of dirs.length === 0 ? [""] : dirs) {
     let dirPath = join2(cwd, path, dir);
     let filePath = join2(dirPath, urlPath);
-    if (!urlPath.endsWith("/") && await isValidFilePath(filePath, dirPath))
+    if (!urlPath.endsWith("/") && (await isValidFilePath(filePath, dirPath)))
       return filePath;
     filePath = join2(dirPath, spa ? "" : urlPath, "index.html");
     if (await isValidFilePath(filePath, dirPath)) return filePath;
@@ -53,14 +51,15 @@ var defaultHost = "localhost";
 var defaultPort = 3e3;
 function getTarget(config = {}) {
   let { host, port, url } = config;
-  let [, , urlHost, , urlPort] = url?.match(/^(https?:\/\/)?([^:/]+)(:(\d+))?\/?/) ?? [];
+  let [, , urlHost, , urlPort] =
+    url?.match(/^(https?:\/\/)?([^:/]+)(:(\d+))?\/?/) ?? [];
   if (!urlPort && /^\d+$/.test(urlHost)) {
     urlPort = urlHost;
     urlHost = "";
   }
   return {
     port: port || Number(urlPort) || defaultPort,
-    host: host || urlHost || defaultHost
+    host: host || urlHost || defaultHost,
   };
 }
 var mimeTypes = {
@@ -74,7 +73,7 @@ var mimeTypes = {
   gif: "image/gif",
   ico: "image/x-icon",
   txt: "text/plain",
-  md: "text/markdown"
+  md: "text/markdown",
 };
 async function serve(config = {}) {
   await bundle(config);
@@ -118,9 +117,11 @@ var RequestError = class _RequestError extends Error {
       statusText: getProp(options, "statusText"),
       message: getProp(options, "message"),
       name: getProp(options, "name"),
-      data: getProp(options, "data")
+      data: getProp(options, "data"),
     };
-    let statusMessage = [params.status, params.statusText].filter(Boolean).join(" ");
+    let statusMessage = [params.status, params.statusText]
+      .filter(Boolean)
+      .join(" ");
     super(params.message || statusMessage || DEFAULT_REQUEST_ERROR_MESSAGE);
     this.name = params.name ?? DEFAULT_REQUEST_ERROR_NAME;
     this.status = Number(params.status ?? 0);
@@ -234,11 +235,7 @@ function isAbsoluteURL(x) {
 
 // src/utils/getRequestAction.ts
 var syntheticBase = "https://0.cc";
-function getRequestAction({
-  request,
-  target,
-  endpoint: endpoint2
-}) {
+function getRequestAction({ request, target, endpoint: endpoint2 }) {
   let method = request?.method;
   let url = request?.url ?? request?.path;
   if (target && /^[A-Z]+\s/.test(target)) {
@@ -273,14 +270,14 @@ function getRequestAction({
       if (value !== null && value !== void 0)
         urlObject.pathname = urlObject.pathname.replace(
           new RegExp(`:${escapeRegExp(key)}\\b`, "g"),
-          String(value)
+          String(value),
         );
     }
   }
   let { href, pathname, search, hash } = urlObject;
   return {
     method,
-    url: hasAbsoluteURL ? href : pathname + search + hash
+    url: hasAbsoluteURL ? href : pathname + search + hash,
   };
 }
 
@@ -293,7 +290,7 @@ var fetchText = async (target, request) => {
   if (!ok) {
     throw new RequestError({
       status,
-      statusText
+      statusText,
     });
   }
   try {
@@ -301,7 +298,7 @@ var fetchText = async (target, request) => {
       ok,
       status,
       statusText,
-      body: `${(await response.text()).substring(0, 1500)}...`
+      body: `${(await response.text()).substring(0, 1500)}...`,
     };
   } catch (error) {
     throw new RequestError(error);
@@ -322,7 +319,7 @@ function toHTMLTitle(title) {
 }
 (async () => {
   let server = await serve({
-    path: "tests"
+    path: "tests",
   });
   await test("getRequestAction() + 'HTTPMethod path' target", () => {
     let endpoint2 = "https://w.cc/x";
@@ -330,18 +327,18 @@ function toHTMLTitle(title) {
     let request = {
       params: {
         id: 12,
-        section: "info"
+        section: "info",
       },
       query: {
-        q: "test"
-      }
+        q: "test",
+      },
     };
     assert(
       equal(getRequestAction({ request, target, endpoint: endpoint2 }), {
         method: "GET",
-        url: "https://w.cc/x/items/12/info?q=test"
+        url: "https://w.cc/x/items/12/info?q=test",
       }),
-      "getRequestAction() result"
+      "getRequestAction() result",
     );
   });
   await test("getRequestAction() + random target", () => {
@@ -352,37 +349,37 @@ function toHTMLTitle(title) {
       url: "/items/:id/:section",
       params: {
         id: 12,
-        section: "info"
+        section: "info",
       },
       query: {
-        q: "test"
-      }
+        q: "test",
+      },
     };
     assert(
       equal(getRequestAction({ request, target, endpoint: endpoint2 }), {
         method: "GET",
-        url: "https://w.cc/x/items/12/info?q=test"
+        url: "https://w.cc/x/items/12/info?q=test",
       }),
-      "getRequestAction() result"
+      "getRequestAction() result",
     );
   });
   await test("RequestService(url, handler) + getEntry()", async () => {
     let service = new RequestService(fetchText);
     let res1 = await service.send("GET /w", {
-      query: { search: "example", fulltext: 1 }
+      query: { search: "example", fulltext: 1 },
     });
     assert(
       equal([res1.ok, res1.status, res1.statusText], [true, 200, "OK"]),
-      "send"
+      "send",
     );
     assert(res1.body.includes(toHTMLTitle("example")), "send title");
     let api = service.getEntry({ search: "GET /w" });
     let res2 = await api.search({
-      query: { search: "example", fulltext: 1 }
+      query: { search: "example", fulltext: 1 },
     });
     assert(
       equal([res2.ok, res2.status, res2.statusText], [true, 200, "OK"]),
-      "api"
+      "api",
     );
     assert(res2.body.includes(toHTMLTitle("example")), "api title");
   });
@@ -391,21 +388,21 @@ function toHTMLTitle(title) {
     service.use(fetchText);
     let res1 = await service.send("GET /:section", {
       params: { section: "w" },
-      query: { search: "example", fulltext: 1 }
+      query: { search: "example", fulltext: 1 },
     });
     assert(
       equal([res1.ok, res1.status, res1.statusText], [true, 200, "OK"]),
-      "send"
+      "send",
     );
     assert(res1.body?.includes(toHTMLTitle("example")), "send title");
     let api = service.getEntry({ fetchSection: "GET /:section" });
     let res2 = await api.fetchSection({
       params: { section: "w" },
-      query: { search: "example", fulltext: 1 }
+      query: { search: "example", fulltext: 1 },
     });
     assert(
       equal([res2.ok, res2.status, res2.statusText], [true, 200, "OK"]),
-      "api"
+      "api",
     );
     assert(res2.body?.includes(toHTMLTitle("example")), "api title");
   });
@@ -414,14 +411,14 @@ function toHTMLTitle(title) {
     try {
       await service.send("GET /:section", {
         params: { section: "none" },
-        query: { search: "nonsense" }
+        query: { search: "nonsense" },
       });
     } catch (error) {
       assert(error instanceof RequestError, "send instanceof");
       if (error instanceof RequestError) {
         assert(
           equal([error.status, error.statusText], [404, "Not Found"]),
-          "send error"
+          "send error",
         );
         assert(error.message === "404 Not Found", "send error message");
       }
@@ -430,14 +427,14 @@ function toHTMLTitle(title) {
     try {
       await api.fetchSection({
         params: { section: "none" },
-        query: { search: "nonsense" }
+        query: { search: "nonsense" },
       });
     } catch (error) {
       assert(error instanceof RequestError, "api instanceof");
       if (error instanceof RequestError) {
         assert(
           equal([error.status, error.statusText], [404, "Not Found"]),
-          "api error"
+          "api error",
         );
         assert(error.message === "404 Not Found", "api error message");
       }
