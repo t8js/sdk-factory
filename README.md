@@ -154,42 +154,54 @@ Here's an example of a basic JSON request handler that can be passed to `Request
 import {
   RequestHandler,
   RequestError,
+  RequestService,
   getRequestAction,
   toStringValueMap,
 } from "@t8/sdk-factory";
+import type { APISchema } from "./APISchema";
 
-const endpoint = "https://api.example.com";
+export const getRequestHandler(endpoint: string): RequestHandler {
+  return function(target, request) {
+    let { method, url } = getRequestAction({ request, target, endpoint });
 
-export const fetchJSON: RequestHandler = async (target, request) => {
-  let { method, url } = getRequestAction({ request, target, endpoint });
-
-  let response = await fetch(url, {
-    method,
-    headers: toStringValueMap(request?.headers),
-    body: request?.body ? JSON.stringify(request?.body) : null,
-  });
-
-  let { ok, status, statusText } = response;
-
-  if (!ok) {
-    throw new RequestError({
-      status,
-      statusText,
+    let response = await fetch(url, {
+      method,
+      headers: toStringValueMap(request?.headers),
+      body: request?.body ? JSON.stringify(request?.body) : null,
     });
-  }
 
-  try {
-    return {
-      ok,
-      status,
-      statusText,
-      body: await response.json(),
-    };
-  }
-  catch (error) {
-    throw new RequestError(error);
-  }
+    let { ok, status, statusText } = response;
+
+    if (!ok) {
+      throw new RequestError({
+        status,
+        statusText,
+      });
+    }
+
+    try {
+      return {
+        ok,
+        status,
+        statusText,
+        body: await response.json(),
+      };
+    }
+    catch (error) {
+      throw new RequestError(error);
+    }
+  };
 }
+
+export const serverService = new RequestService<APISchema>(
+  getRequestHandler("https://api.example.com")
+);
+
+// Assuming that the given API is proxied by the server to
+// the browser via '/api'
+export const browserService = new RequestService<APISchema>(
+  getRequestHandler("/api")
+);
 ```
 
 To meet the needs of a specific use case, the request handler's code can certainly depart from the example above (which is the primary reason why it's not hardwired into the package).
