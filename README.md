@@ -205,3 +205,85 @@ export const browserService = new RequestService<APISchema>(
 ```
 
 To meet the needs of a specific use case, the request handler's code can certainly depart from the example above (which is the primary reason why it's not hardwired into the package).
+
+## Schema-based validation
+
+Fine-grained schema-based validation of the request and response can be implemented with a custom request handler. Here's how the basic JSON request handler from the [previous section](#custom-request-handler) can be modified to validate its input and output with Zod or, similarly, with another validation lib:
+
+```diff
+  import {
+    RequestHandler,
+    RequestError,
+    RequestService,
+    getRequestAction,
+    toStringValueMap,
+  } from "@t8/sdk-factory";
++ import { z } from "zod";
+- import type { APISchema } from "./APISchema";
++ import { schema } from "./schema"; // defined with Zod
+
+  export const getRequestHandler(endpoint: string): RequestHandler {
+    return function(target, request) {
++     try {
++       schema[target]?.request?.parse(request);
++     }
++     catch {
++       throw new RequestError({
++         statusText: "Invalid request data",
++       });
++     }
+
+      let { method, url } = getRequestAction({ request, target, endpoint });
+
+      let response = await fetch(url, {
+        method,
+        headers: toStringValueMap(request?.headers),
+        body: request?.body ? JSON.stringify(request?.body) : null,
+      });
+
+      let { ok, status, statusText } = response;
+
+      if (!ok) {
+        throw new RequestError({
+          status,
+          statusText,
+        });
+      }
+
+      try {
+        let body = await response.json();
+
++       try {
++         schema[target]?.response?.parse(body);
++       }
++       catch {
++         throw new RequestError({
++           statusText: "Invalid response data",
++         });
++       }
+
+        return {
+          ok,
+          status,
+          statusText,
+          body,
+        };
+      }
+      catch (error) {
+        throw new RequestError(error);
+      }
+    };
+  }
+
++ type APISchema = z.infer<typeof schema>;
+
+  export const serverService = new RequestService<APISchema>(
+    getRequestHandler("https://api.example.com")
+  );
+
+  // Assuming that the given API is proxied by the server to
+  // the browser via '/api'
+  export const browserService = new RequestService<APISchema>(
+    getRequestHandler("/api")
+  );
+```
