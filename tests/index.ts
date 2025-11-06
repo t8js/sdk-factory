@@ -1,8 +1,9 @@
-import { RequestError } from "./src/RequestError";
-import { RequestService } from "./src/RequestService";
-import type { RequestHandler } from "./src/types/RequestHandler";
-import type { Schema } from "./src/types/Schema";
-import { getRequestAction } from "./src/utils/getRequestAction";
+import { serve } from "@t8/serve";
+import { RequestError } from "../src/RequestError";
+import { RequestService } from "../src/RequestService";
+import type { RequestHandler } from "../src/types/RequestHandler";
+import type { Schema } from "../src/types/Schema";
+import { getRequestAction } from "../src/utils/getRequestAction";
 
 // https://en.wiktionary.org/w?search=test&fulltext=1
 type WiktionarySchema = Schema<{
@@ -33,7 +34,7 @@ type WiktionarySchema = Schema<{
   };
 }>;
 
-const endpoint = "https://en.wiktionary.org";
+const endpoint = "http://localhost:3000"; // "https://en.wiktionary.org";
 
 let fetchText: RequestHandler = async (target, request) => {
   let { method, url } = getRequestAction({ request, target, endpoint });
@@ -78,6 +79,10 @@ function toHTMLTitle(title: string) {
 }
 
 (async () => {
+  let server = await serve({
+    path: "tests",
+  });
+
   await test("getRequestAction() + 'HTTPMethod path' target", () => {
     let endpoint = "https://w.cc/x";
     let target = "GET /items/:id/:section";
@@ -220,4 +225,6 @@ function toHTMLTitle(title: string) {
       }
     }
   });
+
+  server.close();
 })();
