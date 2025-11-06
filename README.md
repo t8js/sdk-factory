@@ -160,7 +160,7 @@ import {
 } from "@t8/sdk-factory";
 import type { APISchema } from "./APISchema";
 
-export const getRequestHandler(endpoint: string): RequestHandler {
+const getRequestHandler(endpoint: string): RequestHandler {
   return function(target, request) {
     let { method, url } = getRequestAction({ request, target, endpoint });
 
@@ -198,7 +198,7 @@ export const serverService = new RequestService<APISchema>(
 );
 
 // Assuming that the given API is proxied by the server to
-// the browser via '/api'
+// the browser via `/api`
 export const browserService = new RequestService<APISchema>(
   getRequestHandler("/api")
 );
@@ -218,11 +218,10 @@ Fine-grained schema-based validation of the request and response can be implemen
     getRequestAction,
     toStringValueMap,
   } from "@t8/sdk-factory";
-+ import { z } from "zod";
 - import type { APISchema } from "./APISchema";
-+ import { schema } from "./schema"; // defined with Zod
++ import { apiSchema, type APISchema } from "./apiSchema"; // defined with Zod
 
-  export const getRequestHandler(endpoint: string): RequestHandler {
+  function getRequestHandler(endpoint: string): RequestHandler {
     return function(target, request) {
 +     try {
 +       schema[target]?.request?.parse(request);
@@ -275,15 +274,44 @@ Fine-grained schema-based validation of the request and response can be implemen
     };
   }
 
-+ type APISchema = z.infer<typeof schema>;
-
   export const serverService = new RequestService<APISchema>(
     getRequestHandler("https://api.example.com")
   );
 
   // Assuming that the given API is proxied by the server to
-  // the browser via '/api'
+  // the browser via `/api`
   export const browserService = new RequestService<APISchema>(
     getRequestHandler("/api")
   );
+```
+
+Here's an example of what the API schema definition with a validation library may look like:
+
+```ts
+import { z } from "zod";
+
+export const apiSchema = {
+  "GET /items/:id": {
+    request: z.object({
+      params: z.object({
+        id: z.coerce.number(),
+      }),
+      query: z.optional(
+        z.object({
+          mode: z.optional(z.string()),
+        })
+      ),
+    }),
+    response: z.object({
+      id: z.coerce.number(),
+      name: z.optional(z.string()),
+    }),
+  },
+};
+
+export type APISchema = {
+  [K1 in keyof typeof apiSchema]: {
+    [K2 in keyof (typeof apiSchema)[K1]]: z.infer<(typeof apiSchema)[K1][K2]>;
+  };
+};
 ```
