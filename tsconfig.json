@@ -1,7 +1,8 @@
 {
   "include": ["./index.ts", "./src", "./tests"],
   "compilerOptions": {
-    "noEmit": true,
+    "declaration": true,
+    "emitDeclarationOnly": true,
     "lib": ["ESNext", "DOM"],
     "target": "esnext",
     "outDir": "dist",
