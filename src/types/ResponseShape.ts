@@ -1,4 +1,4 @@
-import type { ResponseSchema } from "./ResponseSchema";
+import type { ResponseSchema } from "./ResponseSchema.ts";
 
 export type ResponseShape<T extends ResponseSchema | undefined> =
   T extends undefined

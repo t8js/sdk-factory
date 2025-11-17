@@ -1,4 +1,4 @@
-import type { SchemaEntry } from "../SchemaEntry";
-import type { PartialResponse } from "./PartialResponse";
+import type { SchemaEntry } from "../SchemaEntry.ts";
+import type { PartialResponse } from "./PartialResponse.ts";
 
 export type ResBody<T extends SchemaEntry> = PartialResponse<T, "body">;

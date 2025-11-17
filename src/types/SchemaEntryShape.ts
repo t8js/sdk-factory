@@ -1,5 +1,5 @@
-import type { RequestSchema } from "./RequestSchema";
-import type { ResponseSchema } from "./ResponseSchema";
+import type { RequestSchema } from "./RequestSchema.ts";
+import type { ResponseSchema } from "./ResponseSchema.ts";
 
 export type SchemaEntryShape = {
   request?: RequestSchema;

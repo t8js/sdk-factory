@@ -1,9 +1,9 @@
 import { serve } from "@t8/serve";
-import { RequestError } from "../src/RequestError";
-import { RequestService } from "../src/RequestService";
-import type { RequestHandler } from "../src/types/RequestHandler";
-import type { Schema } from "../src/types/Schema";
-import { getRequestAction } from "../src/utils/getRequestAction";
+import { RequestError } from "../src/RequestError.ts";
+import { RequestService } from "../src/RequestService.ts";
+import type { RequestHandler } from "../src/types/RequestHandler.ts";
+import type { Schema } from "../src/types/Schema.ts";
+import { getRequestAction } from "../src/utils/getRequestAction.ts";
 
 // https://en.wiktionary.org/w?search=test&fulltext=1
 type WiktionarySchema = Schema<{

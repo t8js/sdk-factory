@@ -1,9 +1,9 @@
-import type { AliasMap } from "./types/AliasMap";
-import type { APITarget } from "./types/APITarget";
-import type { RequestHandler } from "./types/RequestHandler";
-import type { RequestSchema } from "./types/RequestSchema";
-import type { ResponseShape } from "./types/ResponseShape";
-import type { Schema } from "./types/Schema";
+import type { AliasMap } from "./types/AliasMap.ts";
+import type { APITarget } from "./types/APITarget.ts";
+import type { RequestHandler } from "./types/RequestHandler.ts";
+import type { RequestSchema } from "./types/RequestSchema.ts";
+import type { ResponseShape } from "./types/ResponseShape.ts";
+import type { Schema } from "./types/Schema.ts";
 
 export class RequestService<S extends Schema> {
   handler: RequestHandler | undefined;

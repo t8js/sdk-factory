@@ -1,10 +1,13 @@
 {
-  "include": ["./index.ts", "./tests"],
+  "include": ["./index.ts", "./src", "./tests"],
   "compilerOptions": {
-    "lib": ["esnext", "dom"],
+    "noEmit": true,
+    "lib": ["ESNext", "DOM"],
     "target": "esnext",
     "outDir": "dist",
-    "moduleResolution": "node",
+    "module": "nodenext",
+    "moduleResolution": "nodenext",
+    "allowImportingTsExtensions": true,
     "strict": true,
     "noUnusedLocals": true,
     "noUnusedParameters": true

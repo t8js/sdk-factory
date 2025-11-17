@@ -1,4 +1,4 @@
-import type { APITarget } from "./APITarget";
+import type { APITarget } from "./APITarget.ts";
 
 export type RequestSchema = void | {
   target?: APITarget;

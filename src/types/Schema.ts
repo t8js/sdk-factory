@@ -1,5 +1,5 @@
-import type { APITarget } from "./APITarget";
-import type { SchemaEntry } from "./SchemaEntry";
+import type { APITarget } from "./APITarget.ts";
+import type { SchemaEntry } from "./SchemaEntry.ts";
 
 export type Schema<
   T extends Record<APITarget, SchemaEntry> = Record<APITarget, SchemaEntry>,

@@ -1,8 +1,8 @@
-import { escapeRegExp } from "../lib/escapeRegExp";
-import { isAbsoluteURL } from "../lib/isAbsoluteURL";
-import type { APITarget } from "../types/APITarget";
-import type { RequestSchema } from "../types/RequestSchema";
-import type { RequestAction } from "../types/util/RequestAction";
+import { escapeRegExp } from "../lib/escapeRegExp.ts";
+import { isAbsoluteURL } from "../lib/isAbsoluteURL.ts";
+import type { APITarget } from "../types/APITarget.ts";
+import type { RequestSchema } from "../types/RequestSchema.ts";
+import type { RequestAction } from "../types/util/RequestAction.ts";
 
 const syntheticBase = "https://0.cc";
 

@@ -32,7 +32,7 @@
   "author": "axtk",
   "license": "MIT",
   "devDependencies": {
-    "@t8/serve": "^0.1.30",
+    "@t8/serve": "^0.1.34",
     "@types/node": "^22.9.0",
     "typescript": "^5.9.2"
   }
