@@ -1,8 +1,8 @@
-[![npm](https://flat.badgen.net/npm/v/@t8/sdk-factory?labelColor=345&color=46e)](https://www.npmjs.com/package/@t8/sdk-factory) ![Lightweight](https://flat.badgen.net/bundlephobia/minzip/@t8/sdk-factory/?label=minzip&labelColor=345&color=46e) ![TypeScript ✓](https://flat.badgen.net/badge/TypeScript/✓?labelColor=345&color=345)
-
-# @t8/sdk-factory
+# T8 SDK Factory
 
 *Typed SDK factory for web APIs*
+
+[![npm](https://img.shields.io/npm/v/@t8/sdk-factory?labelColor=345&color=46e)](https://www.npmjs.com/package/@t8/sdk-factory) ![Lightweight](https://img.shields.io/bundlephobia/minzip/@t8/sdk-factory?label=minzip&labelColor=345&color=46e)
 
 - Typed requests based on custom API schemas
 - Environment-agnostic interface
