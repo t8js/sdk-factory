@@ -6,17 +6,11 @@
   "types": "dist/index.d.ts",
   "type": "module",
   "scripts": {
-    "build": "npx npm-run-all cleanup compile types",
-    "cleanup": "node -e \"require('node:fs').rmSync('dist', { force: true, recursive: true });\"",
-    "compile": "npx npm-run-all compile:src compile:tests",
-    "compile:src": "npx esbuild index.ts --bundle --outdir=dist --platform=neutral",
-    "compile:tests": "npx esbuild tests/index.ts --bundle --outfile=tests/index.js --platform=node --external:esbuild --format=esm",
-    "prepublishOnly": "npm run build",
-    "preversion": "npx npm-run-all typecheck shape build test",
-    "shape": "npx codeshape",
-    "test": "node tests/index.js",
-    "typecheck": "tsc --noEmit",
-    "types": "tsc -p tsconfig.build.json"
+    "clean": "node -e \"require('node:fs').rmSync('dist', { force: true, recursive: true });\"",
+    "compile": "npx esbuild index.ts --bundle --outdir=dist --platform=neutral",
+    "preversion": "npx npm-run-all clean shape compile test",
+    "shape": "npx codeshape --typecheck --emit-types",
+    "test": "node tests/index.ts"
   },
   "repository": {
     "type": "git",
@@ -34,8 +28,7 @@
   "author": "axtk",
   "license": "MIT",
   "devDependencies": {
-    "@t8/serve": "^0.1.35",
-    "@types/node": "^22.9.0",
-    "typescript": "^5.9.2"
+    "@t8/serve": "^0.1.37",
+    "@types/node": "^25.0.0"
   }
 }
