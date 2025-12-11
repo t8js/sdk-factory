@@ -2,14 +2,13 @@
   "name": "@t8/sdk-factory",
   "version": "1.0.9",
   "description": "Typed SDK factory for web APIs",
-  "main": "dist/index.js",
-  "types": "dist/index.d.ts",
+  "main": "./dist/index.cjs",
+  "module": "./dist/index.mjs",
+  "types": "./dist/index.d.ts",
   "type": "module",
   "scripts": {
-    "clean": "node -e \"require('node:fs').rmSync('dist', { force: true, recursive: true });\"",
-    "compile": "npx esbuild index.ts --bundle --outdir=dist --platform=neutral",
-    "preversion": "npx npm-run-all clean shape compile test",
-    "shape": "npx codeshape --typecheck --emit-types",
+    "preversion": "npx npm-run-all shape test",
+    "shape": "npx codeshape",
     "test": "node tests/index.ts"
   },
   "repository": {
