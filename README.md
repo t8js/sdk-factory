@@ -1,6 +1,6 @@
 # T8 SDK Factory
 
-*Typed SDK factory for web APIs*
+Typed SDK factory for web APIs
 
 [![npm](https://img.shields.io/npm/v/@t8/sdk-factory?labelColor=345&color=46e)](https://www.npmjs.com/package/@t8/sdk-factory) ![Lightweight](https://img.shields.io/bundlephobia/minzip/@t8/sdk-factory?label=minzip&labelColor=345&color=46e)
 
@@ -24,9 +24,9 @@ The constructor accepts a custom `requestHandler`. A specific request handler is
 
 The purpose of `RequestService` is to offer a single environment-agnostic interface to request handling on top of a typed API schema.
 
-🔹 A typed schema allows to prevalidate request inputs at compile-time and highlight mismatches in a type-aware IDE.
+⬥ A typed schema allows to prevalidate request inputs at compile-time and highlight mismatches in a type-aware IDE.
 
-🔹 The environment-agnostic interface works consistently throughout the client and the server:
+⬥ The environment-agnostic interface works consistently throughout the client and the server:
 
 ```ts
 let service = new RequestService<APISchema>(browserHandler);
