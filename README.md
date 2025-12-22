@@ -144,7 +144,7 @@ let userList = await api.users.getList();
 let firstUser = await api.users.getInfo({ params: { id: userList[0].id } });
 ```
 
-For API methods controlled only with query parameters, there is also a shorthand option: the `getQueryEntry()` method, returning aliases accepting only query parameters, without the need to nest them into the `query` key.
+For API methods controlled only with query parameters without path placeholders, there's another shorthand method: `getQueryEntry()`. It can be used similarly to `getEntry()` above, but the returned methods will only accept query parameters without the need to nest them into the `query` key.
 
 ## Custom request handler
 
