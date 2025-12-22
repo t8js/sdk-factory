@@ -8,7 +8,7 @@ export type RequestSchema = void | {
   /**
    * URL path parameters
    * @example
-   * `service.send('GET /item/:id', {params: {id: 10}});`
+   * `service.send("GET /item/:id", { params: { id: 10 } });`
    * sends `GET /item/10`
    */
   params?: void | Record<string, unknown>;

@@ -13,14 +13,14 @@ export type GetRequestActionParams = {
 };
 
 /**
- * Returns `{method, url}` from the given request options.
- *
- * This utility function also produces a full request URL:
- * - by parsing `target` if it matches the pattern
- *   `${HTTPMethod} ${path | url}`;
+ * Returns `{ method, url }` from the given request options, where `url`
+ * is a full request URL, which can be obtained from several sources:
+ * - by picking `request.url` from the parameters;
+ * - by parsing the `target` parameter if it matches the pattern of
+ * `"${HTTPMethod} ${path | url}"`;
  * - by filling out colon-prefixed placeholders, it there are any
- *   (e.g. '/items/:id'), with values from `request.params`;
- * - by adding `request.query` params.
+ *   (like "/items/:id"), with values from `request.params`;
+ * - by adding URL params from `request.query`.
  */
 export function getRequestAction({
   request,
@@ -30,8 +30,7 @@ export function getRequestAction({
   let method = request?.method;
   let url = request?.url ?? request?.path;
 
-  // parsing `target` if it matches the pattern of
-  // `${HTTPMethod} ${path | url}`
+  // Parse `target` if it matches the pattern of `"${HTTPMethod} ${path | url}"`
   if (target && /^[A-Z]+\s/.test(target)) {
     let [targetMethod, targetLocation] = target.split(/\s+/);
 

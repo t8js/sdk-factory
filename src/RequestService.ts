@@ -42,14 +42,14 @@ export class RequestService<S extends Schema> {
    * ```
    * let service = new RequestService<CustomSchema>(handler);
    * let api = service.getEntry({
-   *     getItem: 'GET /items/:id',
+   *   getItem: "GET /items/:id",
    * });
    *
-   * service.send('GET /items/:id', {
-   *     params: {id: 1},
+   * service.send("GET /items/:id", {
+   *   params: { id: 1 },
    * });
-   * // the above call is now equivalent to:
-   * api.getItem({params: {id: 1}});
+   * // The above call is now equivalent to:
+   * api.getItem({ params: { id: 1 } });
    * ```
    */
   getEntry<T extends AliasMap<S>>(aliasMap: T) {
@@ -77,10 +77,10 @@ export class RequestService<S extends Schema> {
    * @example
    * ```
    * let api = service.getEntry({
-   *     getItem: 'GET /item',
+   *   getItem: "GET /item",
    * });
    * api.getItem({
-   *     query: {id: 1},
+   *   query: { id: 1 },
    * });
    * ```
    *
@@ -88,9 +88,9 @@ export class RequestService<S extends Schema> {
    *
    * ```
    * let api = service.getQueryEntry({
-   *     getItem: 'GET /item',
+   *   getItem: "GET /item",
    * });
-   * api.getItem({id: 1});
+   * api.getItem({ id: 1 });
    * ```
    *
    * With the latter code, there is no need to nest the request
