@@ -174,20 +174,12 @@ const getRequestHandler(endpoint: string): RequestHandler {
 
     let { ok, status, statusText } = response;
 
-    if (!ok) {
-      throw new RequestError({
-        status,
-        statusText,
-      });
-    }
+    if (!ok) throw new RequestError({ status, statusText });
 
     try {
-      return {
-        ok,
-        status,
-        statusText,
-        body: await response.json(),
-      };
+      let body = await response.json();
+
+      return { ok, status, statusText, body };
     }
     catch (error) {
       throw new RequestError(error);
@@ -229,9 +221,7 @@ Fine-grained schema-based validation of the request and response can be implemen
 +       schema[target]?.request?.parse(request);
 +     }
 +     catch {
-+       throw new RequestError({
-+         statusText: "Invalid request data",
-+       });
++       throw new RequestError({ statusText: "Invalid request data" });
 +     }
 
       let { method, url } = getRequestAction({ request, target, endpoint });
@@ -244,12 +234,7 @@ Fine-grained schema-based validation of the request and response can be implemen
 
       let { ok, status, statusText } = response;
 
-      if (!ok) {
-        throw new RequestError({
-          status,
-          statusText,
-        });
-      }
+      if (!ok) throw new RequestError({ status, statusText });
 
       try {
         let body = await response.json();
@@ -258,17 +243,10 @@ Fine-grained schema-based validation of the request and response can be implemen
 +         schema[target]?.response?.parse(body);
 +       }
 +       catch {
-+         throw new RequestError({
-+           statusText: "Invalid response data",
-+         });
++         throw new RequestError({ statusText: "Invalid response data" });
 +       }
 
-        return {
-          ok,
-          status,
-          statusText,
-          body,
-        };
+        return { ok, status, statusText, body };
       }
       catch (error) {
         throw new RequestError(error);
