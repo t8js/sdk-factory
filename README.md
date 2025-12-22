@@ -161,7 +161,7 @@ import {
 import type { APISchema } from "./APISchema";
 
 const getRequestHandler(endpoint: string): RequestHandler {
-  return function(target, request) {
+  return async function(target, request) {
     let { method, url } = getRequestAction({ request, target, endpoint });
 
     let response = await fetch(url, {
@@ -222,7 +222,7 @@ Fine-grained schema-based validation of the request and response can be implemen
 + import { apiSchema, type APISchema } from "./apiSchema"; // defined with Zod
 
   function getRequestHandler(endpoint: string): RequestHandler {
-    return function(target, request) {
+    return async function(target, request) {
 +     try {
 +       schema[target]?.request?.parse(request);
 +     }
