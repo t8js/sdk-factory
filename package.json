@@ -27,7 +27,7 @@
   "author": "axtk",
   "license": "MIT",
   "devDependencies": {
-    "@t8/serve": "^0.1.39",
-    "@types/node": "^25.0.0"
+    "@t8/serve": "^0.2.0",
+    "@types/node": "^25.0.3"
   }
 }
