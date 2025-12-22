@@ -50,10 +50,10 @@ The `APISchema` type used with the [`RequestService`](#requestservice) construct
 ```ts
 import type { Schema } from "@t8/sdk-factory";
 
-// wrapping into the `Schema` generic type is optional, but
+// Wrapping into the `Schema` generic type is optional, but
 // this helps validate the basic schema structure
 export type APISchema = Schema<{
-  // a schema key can be any unique string, for an HTTP API
+  // A schema key can be any unique string, for an HTTP API
   // a pair of a method and a path can serve this purpose
   "GET /items/:id": {
     request: {
@@ -82,6 +82,8 @@ export type APISchema = Schema<{
   // ... and so forth
 }>;
 ```
+
+⬥ Schema keys should be unique strings, not necessarily a pair of an HTTP method and a path, as in the example above, but this is a handy naming convention for an HTTP API. If a schema key doesn't match this pattern, `method` and `path` (or `url`) have to be explicitly specified in the schema entry.
 
 With such a schema assigned to `service`, calls to its `send()` method will be prevalidated against this schema, which means that a type-aware IDE will warn of type mismatches or typos in the parameters:
 
