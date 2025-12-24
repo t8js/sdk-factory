@@ -162,7 +162,7 @@ import {
 } from "@t8/sdk-factory";
 import type { APISchema } from "./APISchema";
 
-const getRequestHandler(endpoint: string): RequestHandler {
+function getRequestHandler(endpoint: string): RequestHandler {
   return async function(target, request) {
     let { method, url } = getRequestAction({ request, target, endpoint });
 
