@@ -2,13 +2,9 @@
 
 Typed SDK factory for web APIs
 
-[![npm](https://img.shields.io/npm/v/@t8/sdk-factory?labelColor=345&color=46e)](https://www.npmjs.com/package/@t8/sdk-factory) ![Lightweight](https://img.shields.io/bundlephobia/minzip/@t8/sdk-factory?label=minzip&labelColor=345&color=46e)
-
 - Typed requests based on custom API schemas
 - Environment-agnostic interface
 - Zero dependencies
-
-Installation: `npm i @t8/sdk-factory`
 
 ## `RequestService`
 
